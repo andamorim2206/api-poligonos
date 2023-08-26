@@ -10,7 +10,7 @@ import (
 
 var db *sql.DB
 
-func InitDb() {
+func InitDB() {
 	//informações do banco
 	username := "root"
 	password := "admin"

@@ -1,0 +1,25 @@
+Contrução da API em GO
+
+ideia da Api:
+Calcular o perimetro ou area do poligono.
+
+2 rotas
+POST calculate
+GET Show Register
+
+1-passo: migration
+	table poligono
+	 colunm: "id", "tipo", "valor_perimetro", "valor_area"
+	 
+	 
+2-passo:docker
+	 
+3-passo: estrutura das rotas(handler)
+
+4-passo: calculos dos tipos de poligonos (quadrado e triangulo) (useCase)
+
+5-passo: persistencia no banco (infra)
+
+6-passo: testes unitarios
+
+
