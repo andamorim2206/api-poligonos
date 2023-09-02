@@ -5,32 +5,29 @@ import (
 	"fmt"
 	"log"
 
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 var db *sql.DB
 
 func InitDB() {
-	//informações do banco
-	username := "root"
-	password := "admin"
-	host := "localhost"
-	port := "3306"
-	dbName := "apidb"
+	db, err := sql.Open("sqlite3", "dbapp.db")
 
-	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", username, password, host, port, dbName)
-
-	var err error
-	db, err = sql.Open("mysql", dataSourceName)
 	if err != nil {
 		log.Fatal(err)
 	}
-	//Verificar a conexão com o banco
-	if err = db.Ping(); err != nil {
+
+	defer db.Close()
+
+	query := `INSERT INTO poligono(id, tipo, valor_perimetro, valor_area) VALUES(001, 'triangulo', 1002, 532)`;
+
+	_, err = db.Exec(query)
+
+	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println("Conexão com o banco de dados estabelecida com sucesso.")
+	fmt.Println("Inserção feita com Sucesso")
 }
 
 func CloseDB() {
