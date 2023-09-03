@@ -19,7 +19,7 @@ func InitDB() {
 
 	defer db.Close()
 
-	query := `INSERT INTO poligono(id, tipo, valor_perimetro, valor_area) VALUES(001, 'triangulo', 1002, 532)`;
+	query := `INSERT INTO poligono(id, tipo, valor_perimetro, valor_area) VALUES(002, 'triangulo', 1003, 512)`;
 
 	_, err = db.Exec(query)
 
