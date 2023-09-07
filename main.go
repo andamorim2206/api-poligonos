@@ -1,13 +1,26 @@
 package main
 
-import(
-	ConnectionDb "github.com/andamorim2206/api-poligonos/infra"
+import (
+	"database/sql"
+	"fmt"
+
+	"github.com/andamorim2206/api-poligonos/internal/infra/database"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 
 func main() {
-	  // Inicialização do banco de dados
-	  ConnectionDb.InitDB()
-	  defer ConnectionDb.CloseDB()
+	db, err := sql.Open("sqlite3", "dbapp.db")
+	if err != nil {
+		panic(err)
+	}
+
+	defer db.Close()
+
+	polygonsRepository := database.NewPolygonsRepository(db)
+
+	polygonsRepository.Save()
+
+	fmt.Println("Deu Bom");
 }
 
