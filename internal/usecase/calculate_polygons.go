@@ -21,3 +21,7 @@ func NewCalculatePolygons(polygonsRepository entity.PolygonsRepositoryInterface)
 		PolygonsRepository: polygonsRepository,
 	}
 }
+
+func (c *CalculatePolygons) Execute(input PolygonsInput) (*PolygonsOutput) {
+	
+}
