@@ -3,8 +3,9 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"net/http"
 
-	"github.com/andamorim2206/api-poligonos/internal/infra/database"
+	"github.com/gorilla/mux"
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -17,10 +18,12 @@ func main() {
 
 	defer db.Close()
 
-	polygonsRepository := database.NewPolygonsRepository(db)
+	r := mux.NewRouter()
 
-	polygonsRepository.Save()
+	r.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintln(w, "Hello, World!")
+	})
 
-	fmt.Println("Deu Bom");
+	http.ListenAndServe(":8000", r)
 }
 

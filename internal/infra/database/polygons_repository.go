@@ -3,6 +3,8 @@ package database
 import (
 	"database/sql"
 	"fmt"
+
+	"github.com/andamorim2206/api-poligonos/internal/entity"
 )
 
 type PolygonsRepository struct {
@@ -15,8 +17,9 @@ func NewPolygonsRepository(db *sql.DB) *PolygonsRepository {
 	}
 }
 
-func(r *PolygonsRepository) Save() error {
-	_, err := r.Db.Exec("INSERT INTO poligono(id, tipo, valor_perimetro, valor_area) VALUES(003, 'triangulo', 1011, 513)");
+func(r *PolygonsRepository) Save(polygons  *entity.Polygons) error {
+	_, err := r.Db.Exec("INSERT INTO poligono(id, tipo, valor_perimetro, valor_area) VALUES(?, ?, ?, NULL)", 
+	polygons.ID, polygons.TypePolygons, polygons.Perimeter);
 
 	if err != nil {
 		return err

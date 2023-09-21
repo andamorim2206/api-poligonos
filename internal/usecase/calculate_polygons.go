@@ -8,8 +8,9 @@ type PolygonsInput struct {
 }
 
 type PolygonsOutput struct {
-	Perimeter float64
-	Area      float64
+	ID           string
+	TypePolygons string
+	Perimeter    float64
 }
 
 type CalculatePolygons struct {
@@ -22,6 +23,24 @@ func NewCalculatePolygons(polygonsRepository entity.PolygonsRepositoryInterface)
 	}
 }
 
-func (c *CalculatePolygons) Execute(input PolygonsInput) (*PolygonsOutput) {
-	
+func (c *CalculatePolygons) Execute(input PolygonsInput) (*PolygonsOutput, error) {
+	polygons, err := entity.NewPolygons(input.ID, input.TypePolygons)
+	if err != nil {
+		return nil, err
+	}
+
+	err = polygons.CalculatePerimeter()
+	if err != nil {
+		return nil, err
+	}
+	err = c.PolygonsRepository.Save(polygons)
+	if err != nil {
+		return nil, err
+	}
+
+	return &PolygonsOutput{
+		ID:           polygons.ID,
+		TypePolygons: polygons.TypePolygons,
+		Perimeter:    polygons.Perimeter,
+	}, nil
 }
