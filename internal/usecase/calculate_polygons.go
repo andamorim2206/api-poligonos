@@ -1,16 +1,20 @@
 package usecase
 
-import "github.com/andamorim2206/api-poligonos/internal/entity"
+import (
+	"github.com/andamorim2206/api-poligonos/internal/entity"
+)
 
 type PolygonsInput struct {
-	ID           string `json:"id"`
-	TypePolygons string `json:"typePolygons"`
+	ID              string `json:"id"`
+	TypePolygons    string `json:"typePolygons"`
+	TypeCalculation string `json:"typeCalculation"`
 }
 
 type PolygonsOutput struct {
 	ID           string
 	TypePolygons string
 	Perimeter    float64
+	Area         float64
 }
 
 type CalculatePolygons struct {
@@ -24,12 +28,12 @@ func NewCalculatePolygons(polygonsRepository entity.PolygonsRepositoryInterface)
 }
 
 func (c *CalculatePolygons) Execute(input PolygonsInput) (*PolygonsOutput, error) {
-	polygons, err := entity.NewPolygons(input.ID, input.TypePolygons)
+	polygons, err := entity.NewPolygons(input.ID, input.TypePolygons, input.TypeCalculation)
 	if err != nil {
 		return nil, err
 	}
 
-	err = polygons.CalculatePerimeter()
+	err = polygons.CalculatePolygons()
 	if err != nil {
 		return nil, err
 	}
@@ -42,5 +46,6 @@ func (c *CalculatePolygons) Execute(input PolygonsInput) (*PolygonsOutput, error
 		ID:           polygons.ID,
 		TypePolygons: polygons.TypePolygons,
 		Perimeter:    polygons.Perimeter,
+		Area:         polygons.Area,
 	}, nil
 }

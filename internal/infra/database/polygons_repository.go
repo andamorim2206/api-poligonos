@@ -18,8 +18,8 @@ func NewPolygonsRepository(db *sql.DB) *PolygonsRepository {
 }
 
 func(r *PolygonsRepository) Save(polygons  *entity.Polygons) error {
-	_, err := r.Db.Exec("INSERT INTO poligono(id, tipo, valor_perimetro, valor_area) VALUES(?, ?, ?, NULL)", 
-	polygons.ID, polygons.TypePolygons, polygons.Perimeter);
+	_, err := r.Db.Exec("INSERT INTO poligono(id, tipo, valor_perimetro, valor_area) VALUES(?, ?, ?, ?)", 
+	polygons.ID, polygons.TypePolygons, polygons.Perimeter, polygons.Area);
 
 	if err != nil {
 		return err
