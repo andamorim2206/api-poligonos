@@ -5,8 +5,8 @@ import (
 	"fmt"
 )
 
-const RECTANGLE string = "retangulo"
-const TRIANGLE string = "triangulo"
+// const RECTANGLE string = "retangulo"
+// const TRIANGLE string = "triangulo"
 
 type Polygons struct {
 	ID              string
@@ -40,25 +40,6 @@ func (p *Polygons) Validate() error {
 	if p.TypePolygons != RECTANGLE && p.TypePolygons != TRIANGLE {
 		return errors.New("type must be retangulo or triangulo")
 	}
-
-	return nil
-}
-
-func (p *Polygons) CalculatePolygons() error {
-	switch p.TypeCalculation {
-    case "perimetro":
-		err := p.CalculatePerimeter()
-        if err != nil {
-            return err
-        }
-    case "area":
-		err := p.CalculateArea()
-        if err != nil {
-            return err
-        }
-	default:
-        return errors.New("type calculation must be perimetro or area")
-    }
 
 	return nil
 }

@@ -27,7 +27,7 @@ func main() {
 		fmt.Fprintln(w, "Hello, World!")
 	})
 
-	r.HandleFunc("/calcular", CalculatePerimeter(db)).Methods("POST")
+	r.HandleFunc("/calcular/perimetro", CalculatePerimeter(db)).Methods("POST")
 	
 	fmt.Println("Servidor iniciado na porta 8000")
 
@@ -41,10 +41,10 @@ func CalculatePerimeter(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		polygonsRepo := database.NewPolygonsRepository(db)
-		calculatePolygons := usecase.NewCalculatePolygons(polygonsRepo)
+		perimeterRepo := database.NewPerimeterRepository(db)
+		calculatePolygons := usecase.NewCalculatePerimeter(perimeterRepo)
 
-		var requestBody usecase.PolygonsInput
+		var requestBody usecase.PerimeterInput
 		err := json.NewDecoder(r.Body).Decode(&requestBody)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
@@ -58,6 +58,6 @@ func CalculatePerimeter(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		fmt.Fprintf(w, "Perímetro calculado: %f Area Calculada: %f", output.Perimeter, output.Area)
+		fmt.Fprintf(w, "Perímetro calculado: %f", output.Perimeter)
 	}
 }

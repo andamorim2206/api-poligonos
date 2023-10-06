@@ -1,5 +1,5 @@
 package entity
 
-type PolygonsRepositoryInterface interface {
-	Save(polygons *Polygons) error
+type PerimeterRepositoryInterface interface {
+	Save(perimeter *Perimeter) error
 }
