@@ -28,6 +28,7 @@ func main() {
 	})
 
 	r.HandleFunc("/calcular/perimetro", CalculatePerimeter(db)).Methods("POST")
+	r.HandleFunc("/calcular/area", CalculateArea(db)).Methods("POST")
 	
 	fmt.Println("Servidor iniciado na porta 8000")
 
@@ -59,5 +60,33 @@ func CalculatePerimeter(db *sql.DB) http.HandlerFunc {
 		}
 
 		fmt.Fprintf(w, "Perímetro calculado: %f", output.Perimeter)
+	}
+}
+
+func CalculateArea(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
+			return
+		}
+
+		areaRepo := database.NewAreaRepository(db)
+		calculateArea := usecase.NewCalculateArea(areaRepo)
+
+		var requestBody usecase.AreaInput
+		err := json.NewDecoder(r.Body).Decode(&requestBody)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		output, err := calculateArea.Execute(requestBody)
+
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		fmt.Fprintf(w, "Area calculado: %f", output.Area)
 	}
 }
