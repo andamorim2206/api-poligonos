@@ -29,3 +29,26 @@ func(r *AreaRepository) Save(area  *entity.Area) error {
 
 	return nil
 }
+
+func (r *AreaRepository) FindAllArea() ([]entity.Area, error) {
+	rows, err := r.Db.Query("SELECT id, tipo, valor_area FROM poligonos");
+    if err != nil {
+        return nil, err
+    }
+
+	defer rows.Close();
+
+	areas := make([]entity.Area, 0)
+
+	for rows.Next() {
+		var area entity.Area
+		err := rows.Scan(&area.ID, &area.TypePolygons, &area.Area)
+		if err != nil {
+            return nil, err
+        }
+
+		areas = append(areas, area)
+	}
+
+	return areas, nil
+}
